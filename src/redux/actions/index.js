@@ -1,5 +1,6 @@
-import { CLICK_UPDATE_VALUE } from './actionTypes';
-export const clickButton = value => ({
-  type: CLICK_UPDATE_VALUE,
-  newValue: value
-});
+import { TOGGLE_MODAL } from './actionTypes'
+
+export const toggleModal = value => ({
+  type: TOGGLE_MODAL,
+  status: value
+})

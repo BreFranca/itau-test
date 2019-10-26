@@ -1,10 +1,13 @@
 import React from 'react'
 import { List, FormAnnotation } from '../containers'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { toggleModal } from '../redux/actions'
 import {
-    Row,
-    Col,
-    Button,
-    Typography
+		Row,
+		Col,
+		Button,
+		Typography
 } from 'antd'
 
 class Main extends React.Component {
@@ -35,7 +38,7 @@ class Main extends React.Component {
             <Row type="flex" justify="center">
                 <Col span={8}>
                     <Title align="center">Anotações</Title>
-                    <Button type="primary" block onClick={this.ToggleComment} className="comments-button">
+                    <Button type="primary" block onClick={() => toggleModal(true)} className="comments-button">
                         Nova Anotação
                     </Button>
                     <List options={options} />
@@ -46,4 +49,12 @@ class Main extends React.Component {
     }
 }
 
-export default Main
+const mapStateToProps = store => ({
+	status: store.modal.status,
+	annotation: store.modal.annotation
+})
+
+const mapDispatchToProps = dispatch =>
+	bindActionCreators({ toggleModal }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main)

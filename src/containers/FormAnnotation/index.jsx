@@ -1,10 +1,9 @@
 import React from 'react'
 import {
     Input,
-    Typography,
-    Button,
     Modal
 } from 'antd'
+import { connect } from 'react-redux'
 import './_style.scss'
 
 class FormAnnotation extends React.Component {
@@ -28,13 +27,13 @@ class FormAnnotation extends React.Component {
 
     render () {
         const { TextArea } = Input
-        const { visible } = this.state
+        const { status } = this.props
 
         return (
             <React.Fragment>
                 <Modal
                     title="Nova Anotação"
-                    visible={visible}
+                    visible={status}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
                     cancelText="Cancelar"
@@ -47,4 +46,9 @@ class FormAnnotation extends React.Component {
     }
 }
 
-export default FormAnnotation
+const mapStateToProps = state => ({
+    status: state.modal.status,
+    annotation: state.modal.annotation
+})
+
+export default connect(mapStateToProps)(FormAnnotation)
