@@ -1,4 +1,4 @@
-import { TOGGLE_MODAL, EDIT_MODAL, DELETE_ANNOTATION, INSERT_ANNOTATION } from './actionTypes'
+import { TOGGLE_MODAL, EDIT_MODAL, DELETE_ANNOTATION, SAVE_ANNOTATION } from './actionTypes'
 
 export const toggleModal = () => ({
   type: TOGGLE_MODAL
@@ -14,7 +14,8 @@ export const deleteAnnotation = id => ({
   id
 })
 
-export const insertAnnotation = annotation => ({
-  type: INSERT_ANNOTATION,
+export const saveAnnotation = (method, annotation) => ({
+  type: SAVE_ANNOTATION,
+  method,
   annotation
 })

@@ -1,4 +1,4 @@
-import { DELETE_ANNOTATION, INSERT_ANNOTATION } from '../actions/actionTypes'
+import { DELETE_ANNOTATION, SAVE_ANNOTATION } from '../actions/actionTypes'
 
 const initialState = {
 	annotations: [
@@ -26,11 +26,13 @@ export const annotationReducer = (state = initialState, action) => {
 				status: !state.status,
                 annotations: newAnnotations
 			}
-		case INSERT_ANNOTATION:
+		case SAVE_ANNOTATION:
+            state.annotations.push(action.annotation)
 			return {
 				...state,
+                method: action.method,
 				status: !state.status,
-                annotations: state.annotation.push(action.annotation)
+                annotations: state.annotations
 			}
 		default:
 			return state

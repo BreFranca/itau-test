@@ -5,23 +5,39 @@ import {
 } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { editToggleModal } from '../../redux/actions'
+import { editToggleModal, saveAnnotation } from '../../redux/actions'
 import './_style.scss'
 
 class FormAnnotation extends React.Component {
     state = {
-        visible: false
+        annotation: {
+            id: '',
+            title: '',
+            text: ''
+        }
+    }
+
+    componendDidMount () {
+        const { annotation } = this.props
+        this.setState({
+            annotation
+        })
+    }
+
+    componentDidUpdate (prevProps) {
+        const { annotation } = this.props
+        if (prevProps.annotation !== annotation)
+        this.setState({
+            annotation
+        })
     }
 
     handleOk = e => {
-        const { type } = this.props
-        if (type === 'PUT') {
-            updateAnnotation()
-        } else {
-            insertAnnotation(annotation)
-        }
-        console.log(e);
-    };
+        const { saveAnnotation, type } = this.props
+        const { annotation } = this.state
+        saveAnnotation(type, annotation)
+        console.log(annotation)
+    }
     
     handleCancel = e => {
         const { editToggleModal } = this.props
@@ -31,11 +47,23 @@ class FormAnnotation extends React.Component {
             text: ''
         }
         editToggleModal(annotation)
-    };
+    }
+
+    handleChange = event => {
+        const { annotation } = this.state
+
+        this.setState({
+            annotation: {
+                ...annotation,
+                [event.target.name]: event.target.value
+            }
+        })
+    }
 
     render () {
         const { TextArea } = Input
-        const { status, annotation } = this.props
+        const { annotation } = this.state
+        const { status } = this.props
         const { id, title, text } = annotation
 
         return (
@@ -48,9 +76,21 @@ class FormAnnotation extends React.Component {
                     cancelText="Cancelar"
                     okText="Salvar"
                     >
-                        {id && <Input className="form-inputhide" defaultValue={id} />}
-                        {title && <Input className="form-title" defaultValue={title} />}
-                        <TextArea defaultValue={text} rows={8} />
+                        {id && <Input className="form-inputhide" value={id} />}
+                        <label>Title</label>
+                        <Input
+                            onChange={this.handleChange}
+                            name="title"
+                            className="form-title"
+                            value={title}
+                        />
+                        <label>Comments</label>
+                        <TextArea
+                            value={text}
+                            rows={8}
+                            onChange={this.handleChange}
+                            name="text"
+                        />
                 </Modal>
             </React.Fragment>
         )
@@ -64,6 +104,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch =>
-    bindActionCreators({ editToggleModal }, dispatch)
+    bindActionCreators({ editToggleModal, saveAnnotation }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormAnnotation)

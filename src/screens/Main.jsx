@@ -11,8 +11,14 @@ import {
 } from 'antd'
 
 class Main extends React.Component {
+    changeState = state => {
+        this.setState({
+            state
+        })
+    }
+
     render () {
-		const { Title } = Typography
+        const { Title } = Typography
 		const { toggleModal, annotations, annotation } = this.props
 
         return(
