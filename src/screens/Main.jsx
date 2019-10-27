@@ -11,38 +11,24 @@ import {
 } from 'antd'
 
 class Main extends React.Component {
-    state = {
-        options: [
-            {
-                id: 'dasasjd8asdasd9jdasd8ad',
-                title: 'Anotação 1',
-                text: 'Texto 1'
-            },
-            {
-                id: 'asd8ad8sajd8asmd8asjd8ajsd',
-                title: 'Anotação 2',
-                text: 'Texto 2'
-            }
-        ]
-    }
-
-    componentDidMount () {
-        console.log("Montando Página Main")
-    }
-
     render () {
-        const { options } = this.state
-        const { Title } = Typography
+		const { Title } = Typography
+		const { toggleModal, annotations, annotation } = this.props
 
         return(
             <Row type="flex" justify="center">
                 <Col span={8}>
                     <Title align="center">Anotações</Title>
-                    <Button type="primary" block onClick={() => toggleModal(true)} className="comments-button">
+                    <Button
+                        type="primary"
+                        block
+                        onClick={() => toggleModal(true)}
+                        style={{ marginBottom: 20 }}
+                    >
                         Nova Anotação
                     </Button>
-                    <List options={options} />
-                    <FormAnnotation />
+                    <List options={annotations} />
+                    <FormAnnotation annotation={annotation} />
                 </Col>
             </Row>
         )
@@ -50,7 +36,8 @@ class Main extends React.Component {
 }
 
 const mapStateToProps = store => ({
-	status: store.modal.status,
+    status: store.modal.status,
+    annotations: store.annotations.annotations,
 	annotation: store.modal.annotation
 })
 

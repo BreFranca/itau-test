@@ -4,6 +4,8 @@ import {
     Modal
 } from 'antd'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { editToggleModal } from '../../redux/actions'
 import './_style.scss'
 
 class FormAnnotation extends React.Component {
@@ -12,22 +14,29 @@ class FormAnnotation extends React.Component {
     }
 
     handleOk = e => {
+        const { type } = this.props
+        if (type === 'PUT') {
+            updateAnnotation()
+        } else {
+            insertAnnotation(annotation)
+        }
         console.log(e);
-        this.setState({
-          visible: false,
-        });
     };
     
     handleCancel = e => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
+        const { editToggleModal } = this.props
+        const annotation = {
+            id: '',
+            title: '',
+            text: ''
+        }
+        editToggleModal(annotation)
     };
 
     render () {
         const { TextArea } = Input
-        const { status } = this.props
+        const { status, annotation } = this.props
+        const { id, title, text } = annotation
 
         return (
             <React.Fragment>
@@ -39,7 +48,9 @@ class FormAnnotation extends React.Component {
                     cancelText="Cancelar"
                     okText="Salvar"
                     >
-                        <TextArea rows={8} />
+                        {id && <Input className="form-inputhide" defaultValue={id} />}
+                        {title && <Input className="form-title" defaultValue={title} />}
+                        <TextArea defaultValue={text} rows={8} />
                 </Modal>
             </React.Fragment>
         )
@@ -48,7 +59,11 @@ class FormAnnotation extends React.Component {
 
 const mapStateToProps = state => ({
     status: state.modal.status,
+    type: state.modal.type,
     annotation: state.modal.annotation
 })
 
-export default connect(mapStateToProps)(FormAnnotation)
+const mapDispatchToProps = dispatch =>
+    bindActionCreators({ editToggleModal }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormAnnotation)
