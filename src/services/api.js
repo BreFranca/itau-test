@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { pushModal } from '../helpers'
 
-const API_URL = 'https://annotation-app.herokuapp.com/api'
+let API_URL = process.env.REACT_APP_API_URL
+
 const ERR_MSG_API = 'Erro ao carregar API'
 
 export const getAnnotations = async () => {
