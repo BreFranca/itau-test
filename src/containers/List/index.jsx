@@ -1,22 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { editToggleModal, toggleModal, deleteAnnotation } from '../../redux/actions'
+import { editToggleModal, toggleModal, deleteAnnotation, loadAnnotations } from '../../redux/actions'
 import { Modal } from 'antd'
 import { Accordion } from '../../components'
+import { deleteAnnotations } from '../../services/api'
 
 class List extends React.Component {
 
     handleDelete = (event, id) => {
         event.stopPropagation()
-        const { deleteAnnotation } = this.props
+        const { deleteAnnotation, loadAnnotations } = this.props
         const { confirm } = Modal
 
         confirm({
             title: 'Você tem certeza que deseja deletar essa anotação?',
             content: 'Você não está mais visualizando ela',
-            onOk() {
-                deleteAnnotation(id)
+            async onOk() {
+                const annotations = await deleteAnnotations({ id })
+                console.log(annotations)
+                loadAnnotations(annotations)
             },
             onCancel() {
                 const { toggleModal } = this.props
@@ -48,6 +51,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch =>
-    bindActionCreators({ editToggleModal, toggleModal, deleteAnnotation }, dispatch)
+    bindActionCreators({ editToggleModal, toggleModal, loadAnnotations, deleteAnnotation }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(List)

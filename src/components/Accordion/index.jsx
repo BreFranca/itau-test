@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
     Collapse,
     Icon,
@@ -29,7 +30,7 @@ const Accordion = ({ options, onEdit, onDelete }) => {
                             </React.Fragment>
                         }
                     >
-                        <p>{option.text}</p>
+                        <div dangerouslySetInnerHTML={{__html: option.text}} />
                     </Panel>
                 ))}
             </Collapse>
@@ -37,4 +38,13 @@ const Accordion = ({ options, onEdit, onDelete }) => {
     )
 }
 
+Accordion.propTypes = {
+    options: PropTypes.object.isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired
+}
+
+Accordion.defaultProps = {
+    options: [],
+}
 export default Accordion
