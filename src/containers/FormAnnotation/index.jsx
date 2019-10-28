@@ -5,8 +5,17 @@ import {
 } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { editToggleModal, saveAnnotation } from '../../redux/actions'
+import { toggleModal, editToggleModal, saveAnnotation } from '../../redux/actions'
+import { randomId } from '../../services/index'
 import './_style.scss'
+
+const initialState = {
+    annotation: {
+        id: '',
+        title: '',
+        text: ''
+    }
+}
 
 class FormAnnotation extends React.Component {
     state = {
@@ -33,20 +42,20 @@ class FormAnnotation extends React.Component {
     }
 
     handleOk = e => {
-        const { saveAnnotation, type } = this.props
+        const { toggleModal, saveAnnotation, type } = this.props
         const { annotation } = this.state
+        const id = randomId()
+        if (!annotation.id) {
+            annotation.id = id
+        }
         saveAnnotation(type, annotation)
-        console.log(annotation)
+        this.setState(initialState)
+        toggleModal()
     }
     
     handleCancel = e => {
         const { editToggleModal } = this.props
-        const annotation = {
-            id: '',
-            title: '',
-            text: ''
-        }
-        editToggleModal(annotation)
+        editToggleModal(initialState.annotation)
     }
 
     handleChange = event => {
@@ -104,6 +113,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch =>
-    bindActionCreators({ editToggleModal, saveAnnotation }, dispatch)
+    bindActionCreators({ toggleModal, editToggleModal, saveAnnotation }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormAnnotation)
