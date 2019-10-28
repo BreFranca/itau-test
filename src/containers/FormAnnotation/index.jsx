@@ -6,10 +6,9 @@ import {
 } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { toggleModal, editToggleModal, saveAnnotation, loadAnnotations } from '../../redux/actions'
+import { toggleModal, editToggleModal, saveAnnotation, loadAnnotations } from '../../store/actions'
 import { saveAnnotations } from '../../services/api'
 import { pushNotification } from '../../helpers'
-import { randomId } from '../../helpers'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import './_style.scss'
@@ -18,7 +17,7 @@ const initialState = {
     annotation: {
         id: '',
         title: '',
-        text: ''
+        body: ''
     }
 }
 
@@ -27,7 +26,7 @@ class FormAnnotation extends React.Component {
         annotation: {
             id: '',
             title: '',
-            text: ''
+            body: ''
         },
         loadingBtn: false
     }
@@ -48,17 +47,13 @@ class FormAnnotation extends React.Component {
     }
 
     handleOk = async e => {
-        const { toggleModal, saveAnnotation, type, loadAnnotations } = this.props
+        const { toggleModal, saveAnnotation, method, loadAnnotations } = this.props
         const { annotation } = this.state
         this.setState({
             loadingBtn: true
         })
-        if (annotation.title && annotation.text ) {
-            const id = randomId()
-            if (!annotation.id) {
-                annotation.id = id
-            }
-            const annotations = await saveAnnotations({ type, saveAnnotation, annotation })
+        if (annotation.title && annotation.body ) {
+            const annotations = await saveAnnotations({ type: method, saveAnnotation, annotation })
             loadAnnotations(annotations)
             this.setState(initialState)
             toggleModal()
@@ -93,7 +88,7 @@ class FormAnnotation extends React.Component {
     render () {
         const { annotation, loadingBtn } = this.state
         const { status } = this.props
-        const { id, title, text } = annotation
+        const { id, title, body } = annotation
 
         return (
             <React.Fragment>
@@ -124,7 +119,7 @@ class FormAnnotation extends React.Component {
                         <label>Anotação</label>
                         <CKEditor
                             editor={ ClassicEditor }
-                            data={text}
+                            data={body}
                             config={{
                                 toolbar: [
                                         'undo',
@@ -149,7 +144,7 @@ class FormAnnotation extends React.Component {
                                 this.setState({
                                     annotation: {
                                         ...this.state.annotation,
-                                        text: data
+                                        body: data
                                     }
                                 })
                             } }
@@ -162,7 +157,7 @@ class FormAnnotation extends React.Component {
 
 const mapStateToProps = state => ({
     status: state.modal.status,
-    type: state.modal.type,
+    method: state.modal.method,
     annotation: state.modal.annotation
 })
 

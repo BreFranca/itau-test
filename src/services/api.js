@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { pushModal } from '../helpers'
 
-const API_URL = 'https://my-json-server.typicode.com/BreFranca/itau-test'
-// const API_URL = 'http://localhost:4000'
+const API_URL = 'https://annotation-app.herokuapp.com/api'
 const ERR_MSG_API = 'Erro ao carregar API'
 
 export const getAnnotations = async () => {
@@ -26,10 +25,10 @@ export const getAnnotations = async () => {
     }
 }
 
-export const saveAnnotations = async ({ type, saveAnnotation, annotation }) => {
+export const saveAnnotations = async ({ type, annotation }) => {
     if (type === 'PUT') {
-        const { id } = annotation
-        const response = await axios.put(`${API_URL}/annotations/${id}`, annotation)
+        const { _id } = annotation
+        const response = await axios.put(`${API_URL}/annotations/${_id}`, annotation)
             .then(async result => {
                 const annotations = await getAnnotations()
                 pushModal({

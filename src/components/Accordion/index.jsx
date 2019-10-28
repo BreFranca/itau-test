@@ -25,12 +25,12 @@ const Accordion = ({ options, onEdit, onDelete }) => {
                                 />
                                 <Icon
                                     type="delete"
-                                    onClick={(e) => onDelete(e, option.id)}
+                                    onClick={(e) => onDelete(e, option._id)}
                                 />
                             </React.Fragment>
                         }
                     >
-                        <div dangerouslySetInnerHTML={{__html: option.text}} />
+                        <div dangerouslySetInnerHTML={{__html: option.body}} />
                     </Panel>
                 ))}
             </Collapse>
@@ -39,7 +39,7 @@ const Accordion = ({ options, onEdit, onDelete }) => {
 }
 
 Accordion.propTypes = {
-    options: PropTypes.object.isRequired,
+    options: PropTypes.array.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired
 }

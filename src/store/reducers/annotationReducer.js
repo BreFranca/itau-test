@@ -20,7 +20,6 @@ export const annotationReducer = (state = initialState, action) => {
                 annotations: newAnnotations
 			}
 		case SAVE_ANNOTATION:
-            state.annotations.push(action.annotation)
 			return {
 				...state,
                 method: action.method,

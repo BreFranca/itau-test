@@ -6,7 +6,7 @@ const initialState = {
 	annotation: {
 		id: '',
 		title: '',
-		text: ''
+		body: ''
 	}
 }
 
@@ -16,13 +16,13 @@ export const modalReducer = (state = initialState, action) => {
 			return {
 				...state,
 				status: !state.status,
-				type: 'POST',
+				method: 'POST',
 			}
 		case EDIT_MODAL:
 			return {
 				...state,
 				status: !state.status,
-				type: 'PUT',
+				method: 'PUT',
 				annotation: action.annotation
 			}
 		default:

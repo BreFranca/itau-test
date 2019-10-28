@@ -3,7 +3,7 @@ import { List, FormAnnotation } from '../containers'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { getAnnotations } from '../services/api'
-import { toggleModal, loadAnnotations } from '../redux/actions'
+import { toggleModal, loadAnnotations } from '../store/actions'
 import {
     Spin,
     Row,
